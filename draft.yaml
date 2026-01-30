@@ -1,0 +1,11 @@
+models:
+  Car:
+    brand: string max:255
+    model: string max:255
+    description: text
+    year: integer
+    is_available: boolean default:false
+
+controllers:
+  Car:
+    resource: index, create, store, edit, update, destroy

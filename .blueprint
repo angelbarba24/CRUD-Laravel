@@ -1,0 +1,14 @@
+created:
+    - app/Http/Controllers/CarController.php
+    - database/factories/CarFactory.php
+    - database/migrations/2026_01_30_163237_create_cars_table.php
+    - app/Models/Car.php
+    - tests/Feature/Http/Controllers/CarControllerTest.php
+    - resources/views/car/index.blade.php
+    - resources/views/car/create.blade.php
+    - resources/views/car/edit.blade.php
+updated:
+    - routes/web.php
+models:
+    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable' }
+    Car: { brand: 'string max:255', model: 'string max:255', description: text, year: integer, is_available: 'boolean default:false' }
