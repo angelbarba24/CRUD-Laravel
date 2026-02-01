@@ -1,169 +1,146 @@
 # 🚗 Gestión de Coches - Proyecto Laravel 12
 
-Este es un sistema CRUD (Crear, Leer, Actualizar, Borrar) de vehículos desarrollado con **Laravel 12**. Incluye autenticación segura de usuarios (Breeze), protección de rutas y una interfaz moderna con TailwindCSS.
+Este es un sistema CRUD completo desarrollado con **Laravel 12**. El
+proyecto destaca por haber sido generado rápidamente utilizando
+**Laravel Blueprint** para la estructura y **Laravel Breeze** para la
+seguridad.
 
-## 📋 Características Principales
+------------------------------------------------------------------------
 
-* **Gestión de Vehículos:** Alta, baja, modificación y listado de coches.
-* **Seguridad:** Sistema completo de Login y Registro.
-* **Privacidad:** Solo los usuarios registrados pueden acceder a la gestión de coches.
-* **Interfaz:** Diseño responsive utilizando TailwindCSS y Alpine.js.
-* **Feedback:** Mensajes de validación y confirmación de borrado.
+## 📋 Características
 
----
+-   **CRUD Completo:** Gestión de coches (Crear, Leer, Actualizar,
+    Borrar).
+-   **Autenticación:** Login, Registro y Recuperación de contraseña.
+-   **Seguridad:** Rutas protegidas (Middleware) y validación de datos.
+-   **Diseño:** TailwindCSS con integración de Alpine.js para
+    interactividad.
 
-## 🚀 Instalación y Puesta en Marcha
+------------------------------------------------------------------------
 
-Sigue estos pasos para desplegar el proyecto en tu entorno local.
+## 🛠️ Flujo de Creación (Blueprint & Breeze)
 
-### 1. Requisitos Previos
+Este proyecto se construyó siguiendo estos dos procesos clave:
 
-* PHP 8.2 o superior
-* Composer
-* Node.js & NPM
-* Servidor de Base de Datos (MySQL/MariaDB)
+### 1. Estructura con Laravel Blueprint
 
-### 2. Instalación de Dependencias
+Se utilizó Blueprint para generar automáticamente los **Modelos,
+Migraciones, Controladores y Vistas base**.
 
-Ejecuta los siguientes comandos en la terminal dentro de la carpeta del proyecto:
+**Archivo de definición (`draft.yaml`):**
 
-```bash
-# Instalar dependencias de Backend (Laravel)
+``` yaml
+models:
+  Car:
+    brand: string
+    model: string
+    year: integer
+    description: text
+    is_available: boolean
+
+controllers:
+  Car:
+    resource: index, create, store, edit, update, destroy
+```
+
+**Comandos ejecutados:**
+
+``` bash
+composer require -W --dev laravel-shift/blueprint
+php artisan blueprint:build
+```
+
+> **Nota:** Tras la generación, se ajustaron manualmente las rutas y
+> vistas para corregir la convención de plurales/singulares.
+
+------------------------------------------------------------------------
+
+### 2. Seguridad con Laravel Breeze
+
+Se instaló **Laravel Breeze** para gestionar la autenticación de
+usuarios de forma segura.
+
+**Comandos ejecutados:**
+
+``` bash
+composer require laravel/breeze --dev
+php artisan breeze:install
+```
+
+**Stack seleccionado:** Blade (HTML estándar con Tailwind).\
+**Modo oscuro:** No.
+
+Tras la instalación, se protegieron las rutas de los coches en
+`routes/web.php` utilizando el middleware `auth`.
+
+------------------------------------------------------------------------
+
+## 🚀 Instalación para Desarrolladores
+
+### 1. Instalar Dependencias
+
+``` bash
 composer install
-
-# Instalar dependencias de Frontend (Estilos)
 npm install
 ```
 
-### 3. Configuración del Entorno (.env)
+### 2. Configurar Entorno
 
-Duplica el archivo de ejemplo:
-
-```bash
+``` bash
 cp .env.example .env
-```
-
-Genera la clave de aplicación:
-
-```bash
 php artisan key:generate
 ```
 
-Edita el archivo `.env` y configura tu base de datos:
+Configura tu base de datos en el archivo `.env`:
 
-```ini
+``` ini
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nombre_de_tu_base_datos
-DB_USERNAME=root
-DB_PASSWORD=
+DB_DATABASE=concesionario_db
 ```
 
-### 4. Base de Datos
+### 3. Base de Datos
 
-Ejecuta las migraciones para crear las tablas (`users`, `cars`, `sessions`, etc.):
-
-```bash
+``` bash
 php artisan migrate
 ```
 
----
+------------------------------------------------------------------------
 
-## 🏃‍♂️ Cómo Ejecutar la Aplicación
+## 🏁 Ejecución del Proyecto
 
-Para que el proyecto funcione correctamente, necesitas mantener **dos terminales abiertas**:
-
-**Terminal 1 (Servidor Web):**
-
-```bash
+``` bash
 php artisan serve
-```
-
-**Terminal 2 (Compilador de Assets/Estilos):**
-
-```bash
 npm run dev
 ```
 
-Accede a la web en: [http://127.0.0.1:8000/cars](http://127.0.0.1:8000/cars)
+Accede a:
 
----
+http://127.0.0.1:8000/cars
 
-## 🛠 Guía de Usuario (Datos de Prueba)
+------------------------------------------------------------------------
 
-### Crear Usuario Administrador
+## 👤 Usuario de Prueba
 
-Puedes registrarte desde la web o crear un usuario rápidamente usando la consola Tinker:
-
-```bash
+``` bash
 php artisan tinker
 ```
 
-Copia y pega este script:
-
-```php
+``` php
 \App\Models\User::create([
     'name' => 'Admin',
-    'email' => 'admin@test.com',
+    'email' => 'angel@test.com',
     'password' => bcrypt('12345678'),
     'email_verified_at' => now()
 ]);
 exit;
 ```
 
-**Usuario:** [admin@test.com](mailto:angel@test.com)
-**Contraseña:** 12345678
+Usuario: angel@test.com\
+Contraseña: 12345678
 
----
+------------------------------------------------------------------------
 
-## 📂 Notas para Desarrolladores
+## 📂 Notas Técnicas sobre Rutas
 
-### Estructura de Rutas y Vistas
-
-El proyecto sigue una convención estricta para evitar conflictos entre carpetas y URLs:
-
-| Elemento          | Nombre   | Convención      | Ejemplo                                  |
-| ----------------- | -------- | --------------- | ---------------------------------------- |
-| Rutas (URL)       | Plural   | `cars`          | `route('cars.index')`                    |
-| Vistas (Carpetas) | Singular | `car`           | `view('car.index')`                      |
-| Controlador       | Singular | `CarController` | `app/Http/Controllers/CarController.php` |
-
----
-
-## 🧯 Solución de Problemas Comunes
-
-### 1. Error `View [cars.index] not found`
-
-**Causa:** El controlador intenta cargar la vista usando plural (`cars.`) en lugar de singular (`car.`).
-
-**Solución:** Cambiar a:
-
-```php
-return view('car.index', ...);
-```
-
----
-
-### 2. Error 500 al registrarse / loguearse
-
-**Causa:** Base de datos desactualizada o falta de permisos en sesiones.
-
-**Solución:**
-
-```bash
-php artisan migrate:fresh
-php artisan cache:clear
-```
-
----
-
-### 3. El botón "Log Out" no funciona
-
-**Causa:** Falta cargar Alpine.js.
-
-**Solución:** Asegurar que este script está en el `<head>`:
-
-```html
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-```
+-   Rutas (URL): PLURAL → `route('cars.index')`
+-   Vistas (Carpetas): SINGULAR → `view('car.index')`
