@@ -1,66 +1,79 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Coches</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-gray-100">
+<x-app-layout>
+    <x-slot name="header">
+        Gestión de Vehículos
+    </x-slot>
 
-    @include('layouts.navigation')
+    <div class="container-fluid p-0">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold text-dark mb-0">Listado de Vehículos</h3>
+            <a href="{{ route('cars.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nuevo Coche
+            </a>
+        </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
-            <div class="flex justify-between items-center mb-6 px-4">
-                <h1 class="text-3xl font-bold text-gray-800">Listado de Coches</h1>
-                <a href="{{ route('cars.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
-                    + Nuevo Coche
-                </a>
-            </div>
-
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mx-4">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <table class="min-w-full leading-normal">
-                        <thead>
-                            <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                <th class="py-3 px-6 text-left">Marca</th>
-                                <th class="py-3 px-6 text-left">Modelo</th>
-                                <th class="py-3 px-6 text-center">Año</th>
-                                <th class="py-3 px-6 text-center">Disponible</th>
-                                <th class="py-3 px-6 text-center">Acciones</th>
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="py-3 px-4">Marca</th>
+                                <th scope="col" class="py-3 px-4">Modelo</th>
+                                <th scope="col" class="py-3 px-4 text-center">Año</th>
+                                <th scope="col" class="py-3 px-4 text-center">Disponible</th>
+                                <th scope="col" class="py-3 px-4 text-end">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
+                        <tbody>
                             @foreach($cars as $car)
-                            <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="py-3 px-6 text-left">{{ $car->brand }}</td>
-                                <td class="py-3 px-6 text-left">{{ $car->model }}</td>
-                                <td class="py-3 px-6 text-center">{{ $car->year }}</td>
-                                <td class="py-3 px-6 text-center">
+                            <tr>
+                                <td class="px-4 fw-medium">{{ $car->brand }}</td>
+                                <td class="px-4 text-secondary">{{ $car->model }}</td>
+                                <td class="px-4 text-center">
+                                    <span class="badge bg-light text-dark border">{{ $car->year }}</span>
+                                </td>
+                                <td class="px-4 text-center">
                                     @if($car->is_available)
-                                        <span class="bg-green-200 text-green-700 py-1 px-3 rounded-full text-xs font-bold">Sí</span>
+                                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Disponible
+                                        </span>
                                     @else
-                                        <span class="bg-red-200 text-red-700 py-1 px-3 rounded-full text-xs font-bold">No</span>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">
+                                            <i class="bi bi-x-circle-fill me-1"></i> Vendido
+                                        </span>
                                     @endif
                                 </td>
-                                <td class="py-3 px-6 text-center flex justify-center gap-2">
-                                    <a href="{{ route('cars.edit', $car) }}" class="text-blue-500 hover:text-blue-700 font-bold">Editar</a>
-                                    <form action="{{ route('cars.destroy', $car) }}" method="POST" onsubmit="return confirm('¿Borrar?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700 font-bold">Borrar</button>
-                                    </form>
+                                <td class="px-4 text-end">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="{{ route('cars.edit', $car) }}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+
+                                        <form action="{{ route('cars.destroy', $car) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres borrar este coche?');" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Borrar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
+
+                            @if($cars->isEmpty())
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="bi bi-car-front display-6 d-block mb-3"></i>
+                                    No hay vehículos registrados todavía.
+                                </td>
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
-</body>
-</html>
+</x-app-layout>
