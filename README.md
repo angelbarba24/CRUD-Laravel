@@ -152,7 +152,7 @@ Vista de la página principal y el sistema de autenticación.
 
 | Landing Page | Login | Registro |
 | :---: | :---: | :---: |
-| ![Landing Page](capturas/1.jpg) | ![Login](capturas/3.png) | ![Registro](capturas/2.png) |
+| ![Landing Page](capturas/1.png) | ![Login](capturas/3.png) | ![Registro](capturas/2.png) |
 
 ### 🛠 Panel de Administración (CRUD)
 Gestión interna de la flota de vehículos.
