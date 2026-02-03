@@ -144,3 +144,27 @@ Contraseña: 12345678
 
 -   Rutas (URL): PLURAL → `route('cars.index')`
 -   Vistas (Carpetas): SINGULAR → `view('car.index')`
+
+## 📸 Galería del Proyecto
+
+### 🌐 Parte Pública
+Vista de la página principal y el sistema de autenticación.
+
+| Landing Page | Login | Registro |
+| :---: | :---: | :---: |
+| ![Landing Page](capturas/1.jpg) | ![Login](capturas/3.png) | ![Registro](capturas/2.png) |
+
+### 🛠 Panel de Administración (CRUD)
+Gestión interna de la flota de vehículos.
+
+**1. Listado de Vehículos**
+Vista principal con tabla de datos, indicadores de estado y acciones.
+![Listado de Coches](capturas/4.png)
+
+**2. Añadir Nuevo Vehículo**
+Formulario de alta con validación.
+![Crear Coche](capturas/5.png)
+
+**3. Editar Vehículo**
+Vista para la modificación de datos.
+![Editar Coche](capturas/6.png)
